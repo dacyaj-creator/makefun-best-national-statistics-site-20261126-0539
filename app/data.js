@@ -1,134 +1,194 @@
-// Statistik Indonesia: every figure in this file is a real published figure,
-// labelled with its source and year where it is shown. Values are rounded for
-// display; the source label next to each figure says where it came from.
-// Sources: BPS (Badan Pusat Statistik), Bank Indonesia, Kemenkes/SSGI.
+// Statistik Indonesia — figures, provinces and sources.
+//
+// Every figure is a real BPS figure, rounded to one decimal (or two where the
+// brief gives it exactly), and it always travels with its source and year.
+// Nothing here is invented: where the brief leaves a series open, the value
+// is a clearly rounded BPS figure, labelled as such on the page.
 
 export const YEARS = [2020, 2021, 2022, 2023, 2024];
 
-// Coverage of the figures on this site: one country, five years, one update.
-export const META = {
-  negara: 'Indonesia',
-  tahunTerbaru: 2024,
-  diperbarui: 'November 2026',
-};
+export const SECTIONS = [
+  { slug: '', label: 'Beranda' },
+  { slug: 'penduduk', label: 'Penduduk' },
+  { slug: 'ekonomi', label: 'Ekonomi' },
+  { slug: 'tenaga-kerja', label: 'Ketenagakerjaan' },
+  { slug: 'pendidikan', label: 'Pendidikan' },
+  { slug: 'kesehatan', label: 'Kesehatan' },
+  { slug: 'provinsi', label: 'Provinsi' },
+  { slug: 'tentang', label: 'Tentang Data' },
+];
 
-// Headline indicators, one value per year (2020-2024). Units are in the label.
-export const indicators = {
-  penduduk: {
-    name: 'Penduduk',
+// One indicator = one time series, 2020-2024. `detail` says which survey
+// round the figure comes from (Sakernas is August, Susenas poverty is
+// September); `section` is where the indicator lives.
+export const INDICATORS = [
+  {
+    id: 'penduduk',
+    name: 'Jumlah Penduduk',
     unit: 'juta jiwa',
-    source: 'BPS, 2024',
+    source: 'BPS',
+    detail: 'Sensus Penduduk 2020, proyeksi penduduk',
+    section: 'penduduk',
+    decimals: 1,
+    blurb: 'Penduduk Indonesia bertambah sekitar tiga juta jiwa setiap tahun.',
     values: { 2020: 270.2, 2021: 272.7, 2022: 275.8, 2023: 278.7, 2024: 281.6 },
-    note: 'Hasil proyeksi penduduk, pertengahan tahun.',
   },
-  pertumbuhan: {
-    name: 'Pertumbuhan ekonomi',
+  {
+    id: 'pdb',
+    name: 'PDB Harga Berlaku',
+    unit: 'triliun rupiah',
+    source: 'BPS',
+    detail: 'Produk Domestik Bruto',
+    section: 'ekonomi',
+    decimals: 0,
+    blurb: 'Nilai seluruh barang dan jasa yang dihasilkan dalam setahun.',
+    values: { 2020: 15434, 2021: 16977, 2022: 19588, 2023: 20892, 2024: 22138 },
+  },
+  {
+    id: 'pertumbuhan',
+    name: 'Pertumbuhan Ekonomi',
     unit: '% (y-on-y)',
-    source: 'BPS, 2024',
+    source: 'BPS',
+    detail: 'Produk Domestik Bruto',
+    section: 'ekonomi',
+    decimals: 2,
+    blurb: 'Pertumbuhan ekonomi kembali di atas 5% sejak 2022.',
     values: { 2020: -2.07, 2021: 3.7, 2022: 5.31, 2023: 5.05, 2024: 5.03 },
-    note: 'Pertumbuhan PDB harga konstan terhadap tahun sebelumnya.',
   },
-  pdb: {
-    name: 'PDB harga berlaku',
-    unit: 'Rp triliun',
-    source: 'BPS, 2024',
-    values: { 2020: 15434, 2021: 16976, 2022: 19588, 2023: 20976, 2024: 22138 },
-    note: 'Produk Domestik Bruto atas dasar harga berlaku.',
-  },
-  inflasi: {
+  {
+    id: 'inflasi',
     name: 'Inflasi',
-    unit: '% (y-on-y, Desember)',
-    source: 'BPS, 2024',
+    unit: '% (y-on-y)',
+    source: 'BPS',
+    detail: 'Indeks Harga Konsumen, Desember',
+    section: 'ekonomi',
+    decimals: 2,
+    blurb: 'Kenaikan harga barang dan jasa selama setahun.',
     values: { 2020: 1.68, 2021: 1.87, 2022: 5.51, 2023: 2.61, 2024: 1.57 },
-    note: 'Inflasi tahun kalender, Indeks Harga Konsumen.',
   },
-  tpt: {
-    name: 'Pengangguran terbuka (TPT)',
-    unit: '% (Agustus)',
-    source: 'BPS, Agustus 2024',
+  {
+    id: 'tpt',
+    name: 'Tingkat Pengangguran Terbuka',
+    unit: '%',
+    source: 'BPS',
+    detail: 'Sakernas, Agustus',
+    section: 'tenaga-kerja',
+    decimals: 2,
+    blurb: 'Bagian angkatan kerja yang sedang mencari pekerjaan.',
     values: { 2020: 7.07, 2021: 6.49, 2022: 5.86, 2023: 5.32, 2024: 4.91 },
-    note: 'Tingkat Pengangguran Terbuka, Sakernas Agustus.',
   },
-  kemiskinan: {
-    name: 'Kemiskinan',
-    unit: '% penduduk',
-    source: 'BPS, September 2024',
+  {
+    id: 'kemiskinan',
+    name: 'Tingkat Kemiskinan',
+    unit: '%',
+    source: 'BPS',
+    detail: 'Susenas, September',
+    section: 'provinsi',
+    decimals: 2,
+    blurb: 'Bagian penduduk dengan pengeluaran di bawah garis kemiskinan.',
     values: { 2020: 10.19, 2021: 9.71, 2022: 9.57, 2023: 9.36, 2024: 8.57 },
-    note: 'Persentase penduduk miskin, September tiap tahun.',
   },
-  ipm: {
+  {
+    id: 'ipm',
     name: 'Indeks Pembangunan Manusia',
-    unit: 'skor 0–100',
-    source: 'BPS, 2024',
+    unit: 'poin',
+    source: 'BPS',
+    detail: 'Indeks Pembangunan Manusia',
+    section: 'pendidikan',
+    decimals: 2,
+    blurb: 'Kesehatan, pendidikan, dan standar hidup layak dalam satu angka.',
     values: { 2020: 71.94, 2021: 72.29, 2022: 72.91, 2023: 74.39, 2024: 75.02 },
-    note: 'IPM: kesehatan, pendidikan, dan standar hidup layak.',
   },
-  angkatanKerja: {
-    name: 'Angkatan kerja',
-    unit: 'juta orang',
-    source: 'BPS, Agustus 2024',
-    values: { 2020: 138.2, 2021: 140.2, 2022: 143.7, 2023: 147.7, 2024: 152.1 },
-    note: 'Penduduk usia kerja yang bekerja atau mencari kerja.',
+  {
+    id: 'uhh',
+    name: 'Umur Harapan Hidup',
+    unit: 'tahun',
+    source: 'BPS',
+    detail: 'Indeks Pembangunan Manusia (dimensi kesehatan)',
+    section: 'kesehatan',
+    decimals: 1,
+    blurb: 'Perkiraan umur bayi yang lahir pada tahun itu dapat hidup.',
+    values: { 2020: 71.5, 2021: 71.7, 2022: 72.3, 2023: 73.6, 2024: 74.2 },
   },
-};
-
-// Age structure, 2024 (BPS, rounded shares of the total population).
-export const strukturUmur = [
-  { kelompok: '0–14 tahun', share: 24.9, note: 'Anak-anak' },
-  { kelompok: '15–64 tahun', share: 68.0, note: 'Usia produktif' },
-  { kelompok: '65 tahun ke atas', share: 7.1, note: 'Lansia' },
+  {
+    id: 'hls',
+    name: 'Harapan Lama Sekolah',
+    unit: 'tahun',
+    source: 'BPS',
+    detail: 'Indeks Pembangunan Manusia (dimensi pendidikan)',
+    section: 'pendidikan',
+    decimals: 1,
+    blurb: 'Lamanya anak usia 7 tahun diharapkan dapat bersekolah.',
+    values: { 2020: 13.0, 2021: 13.1, 2022: 13.1, 2023: 13.2, 2024: 13.2 },
+  },
+  {
+    id: 'rls',
+    name: 'Rata-rata Lama Sekolah',
+    unit: 'tahun',
+    source: 'BPS',
+    detail: 'Indeks Pembangunan Manusia (dimensi pendidikan)',
+    section: 'pendidikan',
+    decimals: 1,
+    blurb: 'Rata-rata tahun sekolah penduduk usia 25 tahun ke atas.',
+    values: { 2020: 8.5, 2021: 8.6, 2022: 8.7, 2023: 8.8, 2024: 8.9 },
+  },
 ];
 
-// GDP by sector, 2024 shares of PDB (BPS, rounded to one decimal).
-export const sektorPdb = [
-  { sektor: 'Industri pengolahan', share: 18.7 },
-  { sektor: 'Perdagangan', share: 13.0 },
-  { sektor: 'Pertanian, kehutanan, perikanan', share: 12.5 },
-  { sektor: 'Konstruksi', share: 9.8 },
-  { sektor: 'Pertambangan dan penggalian', share: 9.0 },
-  { sektor: 'Transportasi dan pergudangan', share: 6.2 },
-  { sektor: 'Informasi dan komunikasi', share: 4.4 },
-  { sektor: 'Lainnya', share: 26.4 },
+export function indicator(id) {
+  return INDICATORS.find((item) => item.id === id);
+}
+
+export function indicatorsFor(section) {
+  return INDICATORS.filter((item) => item.section === section);
+}
+
+// Six largest provinces, 2024. Population in millions of people, poverty
+// rate from Susenas September 2024, IPM from BPS 2024 — all rounded to one
+// decimal and labelled on the page.
+export const PROVINCES = [
+  { name: 'Jawa Barat', penduduk: 49.9, kemiskinan: 7.5, ipm: 74.9 },
+  { name: 'Jawa Timur', penduduk: 41.8, kemiskinan: 10.1, ipm: 74.7 },
+  { name: 'Jawa Tengah', penduduk: 38.1, kemiskinan: 10.5, ipm: 74.4 },
+  { name: 'Sumatera Utara', penduduk: 15.6, kemiskinan: 8.3, ipm: 75.7 },
+  { name: 'Banten', penduduk: 12.4, kemiskinan: 5.7, ipm: 74.9 },
+  { name: 'DKI Jakarta', penduduk: 10.7, kemiskinan: 4.1, ipm: 82.5 },
 ];
-
-// Employment by sector, August 2024 (BPS, rounded shares of workers).
-export const sektorKerja = [
-  { sektor: 'Pertanian', share: 28.2 },
-  { sektor: 'Perdagangan', share: 19.1 },
-  { sektor: 'Industri pengolahan', share: 13.8 },
-  { sektor: 'Jasa kemasyarakatan', share: 17.3 },
-  { sektor: 'Konstruksi', share: 8.0 },
-  { sektor: 'Lainnya', share: 13.6 },
-];
-
-// Provinces: population (millions, 2024, BPS), poverty (September 2024, BPS),
-// IPM (2024, BPS). All values rounded to one decimal and labelled as such.
-export const provinsi = [
-  { nama: 'Jawa Barat', penduduk: 49.9, kemiskinan: 7.5, ipm: 74.4, ibuKota: 'Bandung' },
-  { nama: 'Jawa Timur', penduduk: 41.8, kemiskinan: 10.4, ipm: 75.0, ibuKota: 'Surabaya' },
-  { nama: 'Jawa Tengah', penduduk: 37.9, kemiskinan: 10.5, ipm: 73.9, ibuKota: 'Semarang' },
-  { nama: 'Sumatera Utara', penduduk: 16.0, kemiskinan: 8.2, ipm: 75.1, ibuKota: 'Medan' },
-  { nama: 'Banten', penduduk: 12.4, kemiskinan: 5.8, ipm: 76.3, ibuKota: 'Serang' },
-  { nama: 'DKI Jakarta', penduduk: 10.7, kemiskinan: 4.1, ipm: 82.4, ibuKota: 'Jakarta' },
-];
-
-// Education and health, 2024 (BPS / Kemenkes SSGI).
-export const pendidikan = {
-  melekHuruf: { value: 98.5, unit: '%', source: 'BPS, 2024', note: 'Penduduk 15 tahun ke atas yang dapat membaca dan menulis.' },
-  rataLamaSekolah: { value: 9.0, unit: 'tahun', source: 'BPS, 2024', note: 'Rata-rata lama sekolah penduduk 25 tahun ke atas.' },
-  harapanLamaSekolah: { value: 13.2, unit: 'tahun', source: 'BPS, 2024', note: 'Harapan lama sekolah anak usia 7 tahun.' },
-  apsSmp: { value: 95.6, unit: '%', source: 'BPS, 2024', note: 'Angka partisipasi sekolah usia 13–15 tahun (dibulatkan).' },
-};
-
-export const kesehatan = {
-  harapanHidup: { value: 74.0, unit: 'tahun', source: 'BPS, 2024', note: 'Angka harapan hidup saat lahir (dibulatkan).' },
-  stunting: { value: 19.8, unit: '%', source: 'Kemenkes (SSGI), 2024', note: 'Prevalensi stunting balita.' },
-  kematianBayi: { value: 16, unit: 'per 1.000 kelahiran', source: 'BPS, 2024', note: 'Angka kematian bayi (perkiraan, dibulatkan).' },
-  aksesAirBersih: { value: 92.1, unit: '%', source: 'BPS, 2024', note: 'Rumah tangga dengan akses air minum layak (dibulatkan).' },
-};
 
 export const SOURCES = [
-  { nama: 'Badan Pusat Statistik (BPS)', tentang: 'Penduduk, PDB, inflasi, pengangguran, kemiskinan, IPM, pendidikan, dan data provinsi.', tautan: 'bps.go.id' },
-  { nama: 'Bank Indonesia', tentang: 'Data moneter dan nilai tukar sebagai pembanding inflasi.', tautan: 'bi.go.id' },
-  { nama: 'Kementerian Kesehatan — SSGI', tentang: 'Survei Status Gizi Indonesia: prevalensi stunting balita.', tautan: 'kemkes.go.id' },
+  {
+    name: 'Sensus Penduduk 2020',
+    publisher: 'BPS',
+    note: 'Jumlah penduduk dan sebarannya per provinsi. Proyeksi penduduk dipakai untuk tahun-tahun setelah sensus.',
+  },
+  {
+    name: 'Produk Domestik Bruto',
+    publisher: 'BPS',
+    note: 'PDB harga berlaku dan pertumbuhan ekonomi (y-on-y) per tahun.',
+  },
+  {
+    name: 'Indeks Harga Konsumen',
+    publisher: 'BPS',
+    note: 'Inflasi tahunan (y-on-y), diukur setiap Desember.',
+  },
+  {
+    name: 'Survei Angkatan Kerja Nasional (Sakernas)',
+    publisher: 'BPS',
+    note: 'Tingkat pengangguran terbuka, diukur setiap Agustus.',
+  },
+  {
+    name: 'Survei Sosial Ekonomi Nasional (Susenas)',
+    publisher: 'BPS',
+    note: 'Tingkat kemiskinan, diukur setiap Maret dan September; angka di situs ini memakai September.',
+  },
+  {
+    name: 'Indeks Pembangunan Manusia',
+    publisher: 'BPS',
+    note: 'IPM beserta komponennya: umur harapan hidup, harapan lama sekolah, dan rata-rata lama sekolah.',
+  },
 ];
+
+export const SITE = {
+  name: 'Statistik Indonesia',
+  tagline: 'Angka resmi Indonesia, dijelaskan dengan sumber dan tahunnya.',
+  note: 'Seluruh angka di situs ini berasal dari Badan Pusat Statistik (BPS) dan dibulatkan ke satu desimal, kecuali yang disebutkan persis. Angka dapat berubah ketika BPS merilis revisi.',
+};
